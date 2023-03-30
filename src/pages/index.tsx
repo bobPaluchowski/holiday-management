@@ -1,7 +1,8 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import Holidays from "~/components/Holidays";
+import Holidays from "../components/Holidays";
+import CreateHoliday from "../components/CreateHoliday";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
@@ -24,7 +25,7 @@ const Home: NextPage = () => {
               <div className="flex flex-col gap-4 rounded-xl bg-white/10 p-4 text-white">
                 <h3 className="text-xl font-bold">Holidays</h3>
                 <Holidays />
-                {/* <CreateHoliday /> */}
+                <CreateHoliday />
               </div>
             </div>
           )}

@@ -14,21 +14,8 @@ export const holidayRouter = createTRPCRouter({
         userId: ctx.session.user.id,
       },
     });
-    console.log("holidays from prisma", holidays.map(({id, holidayStartDay, holidayEndDay, reason}) => ({id, holidayStartDay, holidayEndDay, reason})));
-    return [
-      {
-        id: "1",
-        holidayStartDay: "01-06-2023",
-        holidayEndDay: "01-07-2023",
-        reason: "Annual holiday",
-      },
-      {
-        id: "2",
-        holidayStartDay: "02-07-2023",
-        holidayEndDay: "01-08-2023",
-        reason: "I'm lazy",
-      }
-    ];
+    return holidays.map(({id, holidayStartDay, holidayEndDay, reason}) => ({id, holidayStartDay, holidayEndDay, reason}));
+   
   }),
   createHoliday: protectedProcedure.input(holidayInput).mutation(async ({ctx, input}) => {
     return ctx.prisma.holiday.create({
