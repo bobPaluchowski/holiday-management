@@ -1,8 +1,8 @@
 import { z } from "zod";
+import { holidayInput } from "~/types";
 
 import {
   createTRPCRouter,
-  publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
 
@@ -30,4 +30,26 @@ export const holidayRouter = createTRPCRouter({
       }
     ];
   }),
+  createHoliday: protectedProcedure.input(holidayInput).mutation(async ({ctx, input}) => {
+    return ctx.prisma.holiday.create({
+      data: {
+        holidayStartDay: input.startDate,
+        holidayEndDay: input.endDate,
+        reason: input.reason,
+        user: {
+          connect: {
+            id: ctx.session.user.id,
+          },
+        },
+      },
+    });
+  }),
+  deleteHoliday: protectedProcedure.input(z.string()).mutation(async ({ctx, input}) => {
+    return ctx.prisma.holiday.delete({
+      where: {
+        id: input,
+      },
+    });
+  }),
+  // TODO: create updateHoliday
 });
