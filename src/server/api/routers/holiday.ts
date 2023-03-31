@@ -40,16 +40,22 @@ export const holidayRouter = createTRPCRouter({
   }),
   // TODO: create updateHoliday
   // FIXME: fix it 
-  // updateHoliday: protectedProcedure.input(z.object({
-  //   id: z.string(),
-  // })).mutation(async ({ctx, input: {id}}) => {
-  //   return ctx.prisma.holiday.update({
-  //     where: {
-  //       id,
-  //     },
-  //     data: {
-        
-  //     }
-  //   })
-  // })
+  updateHoliday: protectedProcedure.input(z.object({
+    id: z.string(),
+    holidayStartDay: z.date(),
+    holidayEndDay: z.date(),
+    reason: z.string(),
+  })).mutation(async ({ctx, input}) => {
+    const {id, holidayStartDay, holidayEndDay, reason} = input;
+    return ctx.prisma.holiday.update({
+      where: {
+        id,
+      },
+      data: {
+        holidayStartDay,
+        holidayEndDay,
+        reason,
+      }
+    })
+  })
 });

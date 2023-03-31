@@ -10,6 +10,8 @@ export default function Holiday({ holiday }: HolidayProps) {
   const { id, holidayStartDay, holidayEndDay, reason } = holiday;
   const trpc = api.useContext();
 
+  // TODO: create mutation
+
   const { mutate: deleteMutation } = api.holiday.deleteHoliday.useMutation({
     onMutate: async (deleteId) => {
       // cancel any outgoing re-fetches so they don't overwrite our optimistic update
@@ -43,8 +45,8 @@ export default function Holiday({ holiday }: HolidayProps) {
   return (
     <div className="flex items-center justify-between gap-2">
       <div className="flex items-center gap-2">
-        <h3>{holidayStartDay}</h3>
-        <h3>{holidayEndDay}</h3>
+        <h3>{holidayStartDay.toString()}</h3>
+        <h3>{holidayEndDay.toString()}</h3>
         <p>{reason}</p>
       </div>
       <button

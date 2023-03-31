@@ -1,17 +1,17 @@
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { api } from "../utils/api";
 import { holidayInput } from "../types";
 import type { Holiday } from "../types";
 
 export default function CreateHoliday() {
-  const [newHolidayStartDay, setNewHolidayStartDay] = useState("");
-  const [newHolidayEndDay, setNewHolidayEndDay] = useState("");
+  const [newHolidayStartDay, setNewHolidayStartDay] = useState();
+  const [newHolidayEndDay, setNewHolidayEndDay] = useState();
   const [newReason, setNewReason] = useState("");
 
   const trpc = api.useContext();
 
-  const { mutate } = api.holiday.create.useMutation({
+  const { mutate: createMutation } = api.holiday.create.useMutation({
     onMutate: async (
       newHolidayStartDay: any,
       newHolidayEndDay: any,
@@ -44,20 +44,11 @@ export default function CreateHoliday() {
     },
     // if the mutation fails, use the context returned from onMutate to roll back
     onError: (
-      _err: unknown,
-      newHolidayStartDay: SetStateAction<Date>,
-      newHolidayEndDay: SetStateAction<Date>,
-      newReason: SetStateAction<string>,
-      context: {
-        previousHolidays:
-          | {
-              id: string;
-              holidayStartDay: Date;
-              holidayEndDay: Date;
-              reason: string | null;
-            }[]
-          | undefined;
-      }
+      err,
+      newHolidayStartDay,
+      newHolidayEndDay,
+      newReason,
+      context
     ) => {
       toast.error("An error occurred when creating todo");
 
@@ -66,7 +57,7 @@ export default function CreateHoliday() {
       setNewHolidayEndDay(newHolidayEndDay);
       setNewReason(newReason);
       if (!context) return;
-      trpc.holiday.getAll.setData(undefined, () => context.previousHolidays);
+      trpc.holiday.getAll.setData(undefined, () => context?.previousHolidays);
     },
 
     // always re-fetch after error or success
@@ -84,21 +75,21 @@ export default function CreateHoliday() {
           const endDateResult = holidayInput.safeParse(newHolidayEndDay);
           const reasonResult = holidayInput.safeParse(newReason);
 
-          if (!startDateResult) {
+          if (!startDateResult || !endDateResult || !reasonResult) {
             toast.error(startDateResult.error.format()._errors.join("\n"));
             return;
           }
-          if (!endDateResult) {
-            toast.error(endDateResult.error.format()._errors.join("\n"));
-            return;
-          }
-          if (!reasonResult) {
-            toast.error(reasonResult.error.format()._errors.join("\n"));
-            return;
-          }
-          mutate(newHolidayStartDay);
-          mutate(newHolidayEndDay);
-          mutate(newReason);
+          // if (!endDateResult) {
+          //   toast.error(endDateResult.error.format()._errors.join("\n"));
+          //   return;
+          // }
+          // if (!reasonResult) {
+          //   toast.error(reasonResult.error.format()._errors.join("\n"));
+          //   return;
+          // }
+          createMutation(newHolidayStartDay);
+          createMutation(newHolidayEndDay);
+          createMutation(newReason);
         }}
         className="flex gap-2"
       >
