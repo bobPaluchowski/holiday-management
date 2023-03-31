@@ -102,7 +102,11 @@ export default function CreateHoliday() {
         }}
         className="flex gap-2"
       >
+        <label htmlFor="startDate">From:</label>
         <input
+          type="date"
+          id="startDate"
+          name="startDate"
           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
           placeholder="Start day"
           value={newHolidayStartDay}
@@ -110,7 +114,12 @@ export default function CreateHoliday() {
             setNewHolidayStartDay(e.target.value);
           }}
         />
+        <label htmlFor="endDate">To:</label>
+
         <input
+          type="date"
+          id="endDate"
+          name="endDate"
           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
           placeholder="End day"
           value={newHolidayEndDay}
@@ -118,6 +127,8 @@ export default function CreateHoliday() {
             setNewHolidayEndDay(e.target.value);
           }}
         />
+        <label htmlFor="reason">Reason:</label>
+
         <input
           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
           placeholder="Reason"
